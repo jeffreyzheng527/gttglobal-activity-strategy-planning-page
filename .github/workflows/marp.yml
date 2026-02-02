@@ -13,13 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build HTML (Official Action)
-        # 这里我们换成了官方插件，它能自动解决权限问题
-        uses: marp-team/action-marp-cli@v2
+      # 关键修改：使用 Node.js 环境，直接运行命令
+      # 这种方式就像你在本地电脑运行一样，不会有权限问题
+      - name: Install Node.js
+        uses: actions/setup-node@v3
         with:
-          input: index.md
-          output: index.html
-          theme-set: gaia
+          node-version: '18'
+
+      - name: Build HTML with npx
+        run: npx @marp-team/marp-cli@latest index.md -o index.html --theme-set gaia
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
