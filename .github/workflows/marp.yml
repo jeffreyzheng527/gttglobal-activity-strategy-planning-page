@@ -13,10 +13,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Build HTML from Markdown
-        uses: docker://marpteam/marp-cli:latest
+      - name: Build HTML (Official Action)
+        # 这里我们换成了官方插件，它能自动解决权限问题
+        uses: marp-team/action-marp-cli@v2
         with:
-          args: index.md -o index.html --theme-set gaia
+          input: index.md
+          output: index.html
+          theme-set: gaia
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
